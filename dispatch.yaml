@@ -34,17 +34,35 @@
       dest: /app
       remote_src: yes
 
-  - name: install dependencies
+  - name: check  
+    ansible.builtin.command: go mod init dispatch
+    register: output
+    ignore_errors: true
+  
+  - name: install
+    when: output.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: go mod init dispatch
     args:
       chdir: /app
-
-  - name: install dependencies
-    ansible.builtin.command: go get 
+    
+  - name: check  
+    ansible.builtin.command: go get
+    register: output
+    ignore_errors: true
+  
+  - name: install
+    when: output.rc != 0 # if the expression is true then only the module will run
+    ansible.builtin.command: go get
     args:
       chdir: /app
 
-  - name: install dependencies
+  - name: check  
+    ansible.builtin.command: go build
+    register: output
+    ignore_errors: true
+  
+  - name: install
+    when: output.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: go build
     args:
       chdir: /app

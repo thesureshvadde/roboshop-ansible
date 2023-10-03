@@ -25,7 +25,7 @@
 [rabbitmq]
 44.211.170.209
 
-[mqsql]
+[mysql]
 35.173.133.236
 
 [mongodb]

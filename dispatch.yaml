@@ -1,15 +1,11 @@
-- name: payment component
-  hosts: payment
+- name: dispatch component
+  hosts: dispatch
   become: yes
   tasks:
-  - name: installing 
+  - name: installing go lang
     ansible.builtin.yum:
-      name: {{item}}
+      name: golang 
       state: installed
-    loop:
-    - python36 
-    - gcc 
-    - python3-devel
 
   - name: check roboshop user exists or not 
     ansible.builtin.command: id roboshop
@@ -27,33 +23,43 @@
       path: /app
       state: directory
 
-  - name: download payment artifact
+  - name: download dispatch artifact
     ansible.builtin.get_url:
-      url: https://roboshop-builds.s3.amazonaws.com/payment.zip
+      url: https://roboshop-builds.s3.amazonaws.com/dispatch.zip
       dest: /tmp
 
-  - name: extract payment artifact
+  - name: extract dispatch artifact
     ansible.builtin.unarchive:
-      src: /tmp/payment.zip
+      src: /tmp/dispatch.zip
       dest: /app
       remote_src: yes
 
   - name: install dependencies
-    ansible.builtin.command: pip3.6 install -r requirements.txt
+    ansible.builtin.command: go mod init dispatch
     args:
       chdir: /app
 
-  - name: coping payment.service to  /etc/systemd/system/payment.service 
-    ansible.builtin.copy:
-      src: payment.service
-      dest: /etc/systemd/system/payment.service
+  - name: install dependencies
+    ansible.builtin.command: go get 
+    args:
+      chdir: /app
 
-  - name: daemon reload, enable and start payment service
+  - name: install dependencies
+    ansible.builtin.command: go build
+    args:
+      chdir: /app
+
+  - name: coping payment.service to  /etc/systemd/system/dispatch.service 
+    ansible.builtin.copy:
+      src: dispatch.service
+      dest: /etc/systemd/system/dispatch.service
+
+  - name: daemon reload, enable and start dispatch service
     ansible.builtin.systemd:
       daemon_reload: true
 
-  - name: restart payment
+  - name: restart dispatch
     ansible.builtin.service:
-      name: payment
+      name: dispatch
       state: restarted
       enabled: true

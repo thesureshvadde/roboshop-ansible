@@ -1,0 +1,6 @@
+- name: redis component
+  hosts: redis
+  become: yes
+  tasks:
+  - name: installing redis repo
+    

@@ -15,10 +15,10 @@
     register: output
     ignore_errors: true
   
-  - name: create cart roboshop
+  - name: create user roboshop
     when: output.rc != 0 # if the expression is true then only the module will run
     become: yes
-    ansible.builtin.cart:
+    ansible.builtin.user:
       name: roboshop
 
   - name: Create /app directory

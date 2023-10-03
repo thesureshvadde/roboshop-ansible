@@ -42,6 +42,7 @@
   - name: install
     when: output.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: "go mod init dispatch"
+    ignore_errors: true
     args:
       chdir: /app
     
@@ -53,6 +54,7 @@
   - name: install
     when: output1.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: "go get"
+    ignore_errors: true
     args:
       chdir: /app
 
@@ -64,6 +66,7 @@
   - name: install
     when: output2.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: "go build"
+    ignore_errors: true
     args:
       chdir: /app
 

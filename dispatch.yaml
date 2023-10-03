@@ -47,22 +47,22 @@
     
   - name: check  
     ansible.builtin.command: go get
-    register: output
+    register: output1
     ignore_errors: true
   
   - name: install
-    when: output.rc != 0 # if the expression is true then only the module will run
+    when: output1.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: go get
     args:
       chdir: /app
 
   - name: check  
     ansible.builtin.command: go build
-    register: output
+    register: output2
     ignore_errors: true
   
   - name: install
-    when: output.rc != 0 # if the expression is true then only the module will run
+    when: output2.rc != 0 # if the expression is true then only the module will run
     ansible.builtin.command: go build
     args:
       chdir: /app
